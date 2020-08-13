@@ -6,11 +6,12 @@ import ShopsMap from './mapbox/map.component';
 import isEqual from 'lodash/isEqual';
 import debounce from 'lodash/debounce';
 import { useFetchShops, useSaveShop } from './api-effects';
+import { useUserRights } from './user-rights';
 
 import './map-view.scss';
 
 function MapView(props) {
-  const { shops, fields, labels, initialBounds } = props;
+  const { shops, fields, labels, initialBounds, userRole } = props;
   const [state, dispatch] = useReducer(reducer, { ...initialState, shops });
   const setBounds = useRef(
     debounce(bounds => dispatch({ type: 'boundsChange', payload: bounds })),
@@ -19,6 +20,7 @@ function MapView(props) {
 
   useFetchShops(state, dispatch);
   useSaveShop(state, dispatch);
+  const userRights = useUserRights(userRole);
 
   const onBoundsChange = (bounds, viewport) => {
     const prevBounds = (state.bounds || initialBounds || []).flat().map(b => b.toFixed(3));
@@ -30,13 +32,14 @@ function MapView(props) {
 
   return (
     <div className="c-map-view">
-      <Toolbar status={state.status} dispatch={dispatch} labels={labels} />
+      <Toolbar userRights={userRights} status={state.status} dispatch={dispatch} labels={labels} />
       <Sidebar
         status={state.status}
         shop={state.shops[state.selectedShopId]}
         fields={fields}
         dispatch={dispatch}
         labels={labels}
+        userRights={userRights}
       />
       <ShopsMap
         bounds={state.bounds || initialBounds || null}

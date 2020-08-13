@@ -1,5 +1,6 @@
 import produce from 'immer';
 import { v4 as uuidv4 } from 'uuid';
+import { getUserRightsByRole } from './user-rights';
 
 const getMarkerId = payload => {
   return payload.id;

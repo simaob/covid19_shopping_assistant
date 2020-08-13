@@ -1,5 +1,5 @@
 class MapController < ApplicationController
-  before_action :set_fields, :set_labels, only: [:index]
+  before_action :set_fields, :set_labels, :set_role, only: [:index]
   include EnumI18nHelper
 
   # GET /stores
@@ -177,5 +177,9 @@ class MapController < ApplicationController
       ]
     }
     bounds.fetch(I18n.locale.to_s) { bounds['pt'] }
+  end
+
+  def set_role
+    @role = current_user.role
   end
 end

@@ -4,7 +4,7 @@ import cx from 'classnames';
 import kebabCase from 'lodash/kebabCase';
 
 function Sidebar(props) {
-  const { shop, fields, dispatch, status, labels } = props;
+  const { shop, fields, dispatch, status, labels, userRights } = props;
   const sidebarRef = useRef(null);
   const formRef = useRef(null);
   const [formState, setFormState] = useState({});
@@ -87,7 +87,7 @@ function Sidebar(props) {
                   {labels.save}
                 </button>
               )}
-              {status === 'deleting' && (
+              {status === 'deleting' && userRights.DELETE_SHOP && (
                 <button type="button" onClick={onSave} className="btn btn-outline-danger">
                   {labels.confirm}
                 </button>
@@ -96,20 +96,24 @@ function Sidebar(props) {
           )}
           {status === 'idle' && shop && ['live', 'waiting_approval'].includes(shop.state) && (
             <>
-              <button
-                type="button"
-                className="btn btn-outline-info mr-2"
-                onClick={() => dispatch({ type: 'clickEdit' })}
-              >
-                {labels.edit}
-              </button>
-              <button
-                type="button"
-                onClick={() => dispatch({ type: 'clickDelete' })}
-                className="btn btn-outline-danger"
-              >
-                {labels.delete}
-              </button>
+              {userRights.EDIT_SHOP && (
+                <button
+                  type="button"
+                  className="btn btn-outline-info mr-2"
+                  onClick={() => dispatch({ type: 'clickEdit' })}
+                >
+                  {labels.edit}
+                </button>
+              )}
+              {userRights.DELETE_SHOP && (
+                <button
+                  type="button"
+                  onClick={() => dispatch({ type: 'clickDelete' })}
+                  className="btn btn-outline-danger"
+                >
+                  {labels.delete}
+                </button>
+              )}
             </>
           )}
         </div>
