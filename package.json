@@ -23,7 +23,7 @@
     "deck.gl": "7.3.6",
     "dotenv": "^8.2.0",
     "expose-loader": "^0.7.5",
-    "immer": "^6.0.2",
+    "immer": "^8.0.1",
     "jquery": "3.5.1",
     "layer-manager": "^3.0.4",
     "lodash": "^4.17.19",
